@@ -20,16 +20,19 @@ app.get("/", function (req, res) {
 
 //check if date is invalid
 const isInvalidDate=(date) => {
-  return isNaN(date.getTime());
+  return date.toUTSCString() === "Invalid Date";
 }
 
 // your first API endpoint... 
 app.get("/api/:date", function (req, res) {
   let date = new Date(req.params.date);
   if(isInvalidDate(date)){
-    res.json({error:"Invalid Date"});
+    date=new Date(parseInt(+req.params.date));
   }
-  res.json({greeting: 'hello API'});
+  res.json({
+    unix: date.getTime(),
+    utc: date.toUTCString()
+  });
 });
 
 
